@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>记单词应用测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+        .test-result {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            border-radius: 3px;
+        }
+        .test-result.pass {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .test-result.fail {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            background-color: #165DFF;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0f49d1;
+        }
+    </style>
+</head>
+<body>
+    <h1>记单词应用测试</h1>
+    
+    <div class="test-section">
+        <h2>1. 导航菜单检查</h2>
+        <button class="btn" onclick="testNavigation()">测试导航菜单</button>
+        <div id="navigation-result" class="test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. 页面切换功能</h2>
+        <button class="btn" onclick="testPageSwitch()">测试页面切换</button>
+        <div id="page-switch-result" class="test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. 本地存储测试</h2>
+        <button class="btn" onclick="testLocalStorage()">测试本地存储</button>
+        <div id="local-storage-result" class="test-result"></div>
+    </div>
+
+    <script>
+        function testNavigation() {
+            const result = document.getElementById('navigation-result');
+            
+            // 检查vocabulary.html中的导航菜单
+            fetch('vocabulary.html')
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const navItems = doc.querySelectorAll('.nav-item');
+                    const navTexts = Array.from(navItems).map(item => item.textContent.trim());
+                    
+                    if (!navTexts.includes('AI 速报')) {
+                        result.className = 'test-result pass';
+                        result.innerHTML = '<p>✅ 测试通过：vocabulary.html 中已成功移除 "AI 速报" tab</p>';
+                    } else {
+                        result.className = 'test-result fail';
+                        result.innerHTML = '<p>❌ 测试失败：vocabulary.html 中仍存在 "AI 速报" tab</p>';
+                    }
+                })
+                .catch(error => {
+                    result.className = 'test-result fail';
+                    result.innerHTML = `<p>❌ 测试失败：无法加载 vocabulary.html 文件</p>`;
+                });
+        }
+        
+        function testPageSwitch() {
+            const result = document.getElementById('page-switch-result');
+            
+            // 检查vocabulary.js中的页面切换功能
+            fetch('vocabulary.js')
+                .then(response => response.text())
+                .then(js => {
+                    // 检查是否包含必要的页面切换代码
+                    if (js.includes('switchPage') && js.includes('document.getElementById(pageName)')) {
+                        result.className = 'test-result pass';
+                        result.innerHTML = '<p>✅ 测试通过：页面切换功能正常</p>';
+                    } else {
+                        result.className = 'test-result fail';
+                        result.innerHTML = '<p>❌ 测试失败：页面切换功能异常</p>';
+                    }
+                })
+                .catch(error => {
+                    result.className = 'test-result fail';
+                    result.innerHTML = `<p>❌ 测试失败：无法加载 vocabulary.js 文件</p>`;
+                });
+        }
+        
+        function testLocalStorage() {
+            const result = document.getElementById('local-storage-result');
+            
+            try {
+                // 测试localStorage基本功能
+                localStorage.setItem('test_key', 'test_value');
+                const value = localStorage.getItem('test_key');
+                localStorage.removeItem('test_key');
+                
+                if (value === 'test_value') {
+                    result.className = 'test-result pass';
+                    result.innerHTML = '<p>✅ 测试通过：localStorage 功能正常</p>';
+                } else {
+                    result.className = 'test-result fail';
+                    result.innerHTML = '<p>❌ 测试失败：localStorage 功能异常</p>';
+                }
+            } catch (error) {
+                result.className = 'test-result fail';
+                result.innerHTML = `<p>❌ 测试失败：localStorage 功能异常</p>`;
+            }
+        }
+        
+        // 页面加载时自动执行所有测试
+        window.addEventListener('DOMContentLoaded', () => {
+            testNavigation();
+            testPageSwitch();
+            testLocalStorage();
+        });
+    </script>
+</body>
+</html>

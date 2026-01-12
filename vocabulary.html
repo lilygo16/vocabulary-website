@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>记单词 - AI 速报</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>记单词</h1>
+                <p>轻松管理你的词汇学习</p>
+            </div>
+            <nav class="nav-menu">
+                <ul class="page-nav">
+                    <li class="nav-item active" data-page="add-word">记单词</li>
+                    <li class="nav-item" data-page="word-book">单词本</li>
+                    <li class="nav-item" data-page="word-library">单词库</li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="main-content">
+        <div class="container">
+            <!-- 记单词页面 -->
+            <div class="page active" id="add-word">
+                <div class="page-header">
+                    <h2>添加新单词</h2>
+                    <p>输入单词、词组/例句和标签，保存到你的单词本</p>
+                </div>
+                
+                <form class="word-form" id="word-form">
+                    <div class="form-group">
+                        <label for="word-input">单词 <span class="required">*</span></label>
+                        <input type="text" id="word-input" name="word" placeholder="请输入单词" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phrase-input">词组/例句</label>
+                        <textarea id="phrase-input" name="phrase" rows="3" placeholder="请输入词组或例句"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tags-input">标签（用逗号分隔）</label>
+                        <input type="text" id="tags-input" name="tags" placeholder="例如：日常,商务,考试">
+                        <div class="tag-suggestions" id="tag-suggestions"></div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">保存单词</button>
+                </form>
+            </div>
+            
+            <!-- 单词本页面 -->
+            <div class="page" id="word-book">
+                <div class="page-header">
+                    <div class="header-content">
+                        <h2>单词本</h2>
+                        <p>按标签分类展示你未掌握的单词</p>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="搜索单词或标签...">
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <div class="filter-tabs" id="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">全部</button>
+                    </div>
+                </div>
+                
+                <div class="word-container" id="word-container">
+                    <!-- 单词将按标签分组显示 -->
+                </div>
+                
+                <div class="empty-state" id="empty-wordbook">
+                    <p>单词本为空，快去添加新单词吧！</p>
+                </div>
+            </div>
+            
+            <!-- 单词库页面 -->
+            <div class="page" id="word-library">
+                <div class="page-header">
+                    <div class="header-content">
+                        <h2>单词库</h2>
+                        <p>展示你已掌握的单词</p>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" id="library-search-input" placeholder="搜索已掌握的单词...">
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <div class="filter-tabs" id="library-filter-tabs">
+                        <button class="filter-tab active" data-filter="all">全部</button>
+                    </div>
+                </div>
+                
+                <div class="word-container" id="library-container">
+                    <!-- 已掌握单词将按标签分组显示 -->
+                </div>
+                
+                <div class="empty-state" id="empty-library">
+                    <p>单词库为空，快去学习新单词吧！</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 通知提示 -->
+    <div class="notification" id="notification"></div>
+
+    <!-- 脚本文件 -->
+    <script src="vocabulary.js"></script>
+</body>
+</html>
